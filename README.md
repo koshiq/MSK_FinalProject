@@ -260,12 +260,8 @@ Update `CORS_ORIGIN` in `.env` to match your frontend URL
 
 ## Future Enhancements
 
-- [ ] Video upload and streaming
-- [ ] Payment integration
-- [ ] Social features (sharing, recommendations)
 - [ ] Admin dashboard
 - [ ] Multi-language support
-- [ ] Mobile apps
 - [ ] Advanced analytics
 
 ## License
