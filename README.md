@@ -6,10 +6,24 @@ An Apple TV+ inspired streaming platform with MySQL backend. Built with Express.
 
 - **Apple TV+ Inspired UI**: Beautiful, modern interface with smooth animations
 - **User Authentication**: Secure login and registration with JWT tokens
+- **Role-Based Access Control**: Customer, Employee, and Admin roles with different permissions
 - **Series Management**: Browse, search, and filter web series
+- **Full CRUD Operations**: Create, Read, Update, Delete for Series, Episodes, and Reviews
 - **Episode Tracking**: Continue watching feature that remembers your progress
-- **Reviews & Ratings**: Users can rate and review series
+- **Reviews & Ratings**: Users can rate and review series, edit and delete their own reviews
+- **Admin Panel**: Staff can manage content through an intuitive admin interface
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## Security Features
+
+- **Password Hashing**: bcrypt with configurable rounds
+- **JWT Authentication**: Secure token-based authentication
+- **Input Validation**: Server-side validation using express-validator
+- **XSS Protection**: Helmet.js security headers and input sanitization
+- **SQL Injection Prevention**: Parameterized queries throughout
+- **Rate Limiting**: Protection against brute force attacks
+- **Role-Based Authorization**: Different permissions for customers, employees, and admins
+- **Transaction Support**: ACID compliance for critical operations
 
 ## Tech Stack
 
@@ -99,39 +113,62 @@ The server will start on [http://localhost:3001](http://localhost:3001)
 
 ## Usage
 
-### Default Test Account
+### Test Accounts
 
 You can use these credentials to test the application:
 
-- **Email**: john.doe@example.com
-- **Password**: password123
+**Admin Account:**
+- Email: admin@msk.com
+- Password: password123
 
-Or create a new account through the registration form.
+**Employee Account:**
+- Email: employee@msk.com
+- Password: password123
+
+**Customer Account:**
+- Email: john.doe@example.com
+- Password: password123
+
+Or create a new account through the registration form (new accounts are created as customers).
 
 ### API Endpoints
 
 #### Authentication
-- `POST /api/auth/register` - Register new user
+- `POST /api/auth/register` - Register new user (validates password strength)
 - `POST /api/auth/login` - Login user
 - `GET /api/auth/me` - Get current user (requires auth)
+- `PUT /api/auth/profile` - Update profile (requires auth)
+- `PUT /api/auth/password` - Change password (requires auth)
+- `DELETE /api/auth/account` - Delete account (requires auth)
 
 #### Series
 - `GET /api/series` - Get all series
 - `GET /api/series/:id` - Get series by ID
 - `GET /api/series/featured` - Get featured/trending series
+- `GET /api/series/genres` - Get all genres
 - `GET /api/series/genre/:genre` - Get series by genre
 - `GET /api/series/search?q=query` - Search series
+- `POST /api/series` - Create series (admin/employee only)
+- `PUT /api/series/:id` - Update series (admin/employee only)
+- `DELETE /api/series/:id` - Delete series (admin only)
 
 #### Episodes
 - `GET /api/episodes/:id` - Get episode by ID
 - `GET /api/episodes/series/:seriesId` - Get episodes by series
 - `POST /api/episodes/:episodeId/:seriesId/progress` - Update watch progress (requires auth)
 - `GET /api/episodes/continue/watching` - Get continue watching list (requires auth)
+- `POST /api/episodes` - Create episode (admin/employee only)
+- `PUT /api/episodes/:id` - Update episode (admin/employee only)
+- `DELETE /api/episodes/:id` - Delete episode (admin only)
 
 #### Feedback
 - `POST /api/feedback` - Add feedback (requires auth)
 - `GET /api/feedback/series/:seriesId` - Get feedback for series
 - `GET /api/feedback/my` - Get user's feedback (requires auth)
+- `GET /api/feedback/:id` - Get feedback by ID
+- `PUT /api/feedback/:id` - Update feedback (owner or admin)
+- `DELETE /api/feedback/:id` - Delete feedback (owner or admin)
+- `GET /api/feedback` - Get all feedback with pagination (admin only)
 
 ## Database Schema
 
