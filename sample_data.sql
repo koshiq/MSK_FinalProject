@@ -108,16 +108,19 @@ INSERT INTO MSK_PROD_PROD_HOUSE (PRODUCER_ID, PROD_HOUSE_ID) VALUES
 ('PROD004', 4);
 
 -- Insert Sample Viewer (password is 'password123' hashed with bcrypt)
-INSERT INTO MSK_VIEWER (SERIES_ID, COUNTRY_ID, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD_HASH, BILLING_STREET, BILLING_CITY, BILLING_ZIPCODE, MONTHLY_FEE) VALUES
-(1, 1, 'John', 'Doe', 'john.doe@example.com', '$2b$10$rKvVYLqw6P5gqnXPXYFxH.QZJxGhYnX8lLZr1fNHnN6qQYqJ8kY8O', '123 Main St', 'New York', 10001, 14.99),
-(2, 2, 'Jane', 'Smith', 'jane.smith@example.com', '$2b$10$rKvVYLqw6P5gqnXPXYFxH.QZJxGhYnX8lLZr1fNHnN6qQYqJ8kY8O', '456 Oak Ave', 'London', 12345, 12.99),
-(3, 3, 'Mike', 'Johnson', 'mike.j@example.com', '$2b$10$rKvVYLqw6P5gqnXPXYFxH.QZJxGhYnX8lLZr1fNHnN6qQYqJ8kY8O', '789 Elm St', 'Seattle', 98101, 15.99);
+-- Admin and Employee users for content management
+INSERT INTO MSK_VIEWER (SERIES_ID, COUNTRY_ID, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD_HASH, ROLE, BILLING_STREET, BILLING_CITY, BILLING_ZIPCODE, MONTHLY_FEE) VALUES
+(1, 1, 'Admin', 'User', 'admin@msk.com', '$2a$10$YKccmj3l/AdMMkiwi1iUeu40z5rG93d9.vcf1k.iDAtqwbTUeNG/.', 'admin', '100 Admin Blvd', 'San Francisco', 94102, 14.99),
+(1, 1, 'Employee', 'User', 'employee@msk.com', '$2a$10$YKccmj3l/AdMMkiwi1iUeu40z5rG93d9.vcf1k.iDAtqwbTUeNG/.', 'employee', '200 Staff Ave', 'San Francisco', 94103, 14.99),
+(1, 1, 'John', 'Doe', 'john.doe@example.com', '$2a$10$YKccmj3l/AdMMkiwi1iUeu40z5rG93d9.vcf1k.iDAtqwbTUeNG/.', 'customer', '123 Main St', 'New York', 10001, 14.99),
+(2, 2, 'Jane', 'Smith', 'jane.smith@example.com', '$2a$10$YKccmj3l/AdMMkiwi1iUeu40z5rG93d9.vcf1k.iDAtqwbTUeNG/.', 'customer', '456 Oak Ave', 'London', 12345, 12.99),
+(3, 3, 'Mike', 'Johnson', 'mike.j@example.com', '$2a$10$YKccmj3l/AdMMkiwi1iUeu40z5rG93d9.vcf1k.iDAtqwbTUeNG/.', 'customer', '789 Elm St', 'Seattle', 98101, 15.99);
 
--- Insert Sample Feedback
+-- Insert Sample Feedback (viewer IDs: 1=admin, 2=employee, 3=john, 4=jane, 5=mike)
 INSERT INTO MSK_FEEDBACK (VIEWER_ID, SERIES_ID, RATING, DATE, TEXT) VALUES
-(1, 1, 4.5, '2024-01-15', 'Amazing show! Love the 80s vibe and the mystery.'),
-(2, 2, 5.0, '2024-01-20', 'Best historical drama I have ever watched.'),
-(3, 3, 4.8, '2024-02-10', 'Baby Yoda is adorable! Great story and visuals.');
+(3, 1, 4.5, '2024-01-15', 'Amazing show! Love the 80s vibe and the mystery.'),
+(4, 2, 5.0, '2024-01-20', 'Best historical drama I have ever watched.'),
+(5, 3, 4.8, '2024-02-10', 'Baby Yoda is adorable! Great story and visuals.');
 
 -- Insert Sample Schedules
 INSERT INTO MSK_SCHEDULE (EPISODE_ID, SERIES_ID, START_DATE, END_DATE, IS_CURRENT) VALUES
