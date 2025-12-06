@@ -58,6 +58,17 @@ function updateUIForRole() {
 }
 
 function setupEventListeners() {
+    // Navigation links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const page = e.target.dataset.page;
+            if (page && page !== 'admin') {
+                navigateToPage(page);
+            }
+        });
+    });
+
     // User menu
     const userBtn = document.getElementById('userBtn');
     const dropdownMenu = document.getElementById('dropdownMenu');
@@ -493,10 +504,10 @@ function updateHeroSection(series) {
     document.getElementById('heroGenre').textContent = series.genres || '';
     document.getElementById('heroYear').textContent = series.RELEASE_DATE ? new Date(series.RELEASE_DATE).getFullYear() : '';
 
-    // Update backdrop if available
-    if (series.BANNER_URL) {
+    // Update backdrop with poster if available
+    if (series.POSTER_URL) {
         const backdrop = document.getElementById('heroBackdrop');
-        backdrop.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%), url('${escapeHtml(series.BANNER_URL)}')`;
+        backdrop.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%), url('${escapeHtml(series.POSTER_URL)}')`;
     }
 }
 
@@ -507,7 +518,15 @@ function createSeriesCard(series) {
 
     const imageDiv = document.createElement('div');
     imageDiv.className = 'series-card-image';
-    imageDiv.textContent = series.NAME;
+
+    // Use poster image if available, otherwise show series name
+    if (series.POSTER_URL) {
+        imageDiv.style.backgroundImage = `url('${escapeHtml(series.POSTER_URL)}')`;
+        imageDiv.style.backgroundSize = 'cover';
+        imageDiv.style.backgroundPosition = 'center';
+    } else {
+        imageDiv.textContent = series.NAME;
+    }
 
     const info = document.createElement('div');
     info.className = 'series-card-info';
@@ -547,7 +566,15 @@ function createContinueWatchingCard(item) {
     const imageDiv = document.createElement('div');
     imageDiv.className = 'series-card-image';
     imageDiv.style.height = '157px';
-    imageDiv.textContent = item.seriesName;
+
+    // Use poster image if available
+    if (item.POSTER_URL) {
+        imageDiv.style.backgroundImage = `url('${escapeHtml(item.POSTER_URL)}')`;
+        imageDiv.style.backgroundSize = 'cover';
+        imageDiv.style.backgroundPosition = 'center';
+    } else {
+        imageDiv.textContent = item.seriesName;
+    }
 
     // Add progress bar
     const progressBar = document.createElement('div');
@@ -1275,6 +1302,131 @@ async function updateWatchProgress(episodeId, seriesId, progress) {
         });
     } catch (error) {
         console.error('Failed to update watch progress:', error);
+    }
+}
+
+// Page Navigation
+function navigateToPage(page) {
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === page) {
+            link.classList.add('active');
+        }
+    });
+
+    // Hide all sections
+    const heroSection = document.getElementById('heroSection');
+    const contentRows = document.querySelectorAll('.content-row');
+    const libraryPage = document.getElementById('libraryPage');
+    const continueWatchingSection = document.getElementById('continueWatchingSection');
+
+    switch(page) {
+        case 'home':
+            heroSection.style.display = 'block';
+            contentRows.forEach(row => row.style.display = 'block');
+            if (continueWatchingSection) continueWatchingSection.style.display = currentUser ? 'block' : 'none';
+            libraryPage.style.display = 'none';
+            break;
+
+        case 'browse':
+            heroSection.style.display = 'none';
+            contentRows.forEach(row => row.style.display = 'block');
+            if (continueWatchingSection) continueWatchingSection.style.display = 'none';
+            libraryPage.style.display = 'none';
+            break;
+
+        case 'library':
+            if (!currentUser) {
+                showAuthModal();
+                showToast('Please sign in to view your library');
+                // Reset to home
+                navigateToPage('home');
+                return;
+            }
+            heroSection.style.display = 'none';
+            contentRows.forEach(row => row.style.display = 'none');
+            if (continueWatchingSection) continueWatchingSection.style.display = 'none';
+            libraryPage.style.display = 'block';
+            loadLibraryPage();
+            break;
+
+        case 'search':
+            heroSection.style.display = 'none';
+            contentRows.forEach(row => row.style.display = 'none');
+            if (continueWatchingSection) continueWatchingSection.style.display = 'none';
+            libraryPage.style.display = 'none';
+            document.getElementById('searchInput').focus();
+            break;
+    }
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Load My Library Page
+async function loadLibraryPage() {
+    if (!currentUser) return;
+
+    try {
+        // Load continue watching
+        const history = await apiRequest('/episodes/continue/watching');
+        const libraryContinueSection = document.getElementById('libraryContinueWatching');
+        const libraryContinueGrid = document.getElementById('libraryContinueGrid');
+
+        if (history && history.length > 0) {
+            libraryContinueSection.style.display = 'block';
+            libraryContinueGrid.innerHTML = '';
+            history.forEach(item => {
+                libraryContinueGrid.appendChild(createContinueWatchingCard(item));
+            });
+        } else {
+            libraryContinueSection.style.display = 'none';
+        }
+
+        // Load user reviews
+        const reviews = await apiRequest('/feedback/my');
+        const libraryReviews = document.getElementById('libraryReviews');
+        libraryReviews.innerHTML = '';
+
+        if (reviews && reviews.length > 0) {
+            reviews.forEach(review => {
+                const reviewCard = createReviewCard(review);
+                reviewCard.style.background = 'var(--card-bg)';
+                reviewCard.style.padding = '20px';
+                reviewCard.style.borderRadius = 'var(--border-radius)';
+                libraryReviews.appendChild(reviewCard);
+            });
+        } else {
+            libraryReviews.innerHTML = '<p style="color: var(--text-secondary);">No reviews yet. Start watching and reviewing series!</p>';
+        }
+
+        // Calculate statistics
+        let totalEpisodes = history ? history.length : 0;
+        let totalHours = 0;
+        if (history) {
+            history.forEach(item => {
+                totalHours += (item.DURATION_MIN || 0) * (item.WATCH_PROGRESS || 0) / 100;
+            });
+        }
+        totalHours = Math.round(totalHours / 60);
+
+        let totalReviews = reviews ? reviews.length : 0;
+        let avgRating = 0;
+        if (reviews && reviews.length > 0) {
+            const sum = reviews.reduce((acc, r) => acc + (r.RATING || 0), 0);
+            avgRating = (sum / reviews.length).toFixed(1);
+        }
+
+        // Update statistics
+        document.getElementById('totalWatchedEpisodes').textContent = totalEpisodes;
+        document.getElementById('totalWatchedHours').textContent = totalHours;
+        document.getElementById('totalReviews').textContent = totalReviews;
+        document.getElementById('avgRating').textContent = avgRating;
+
+    } catch (error) {
+        console.error('Failed to load library:', error);
+        showToast('Failed to load library data', 'error');
     }
 }
 

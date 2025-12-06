@@ -17,7 +17,7 @@
                     <li><a href="#" class="nav-link" data-page="browse">Browse</a></li>
                     <li><a href="#" class="nav-link" data-page="library">My Library</a></li>
                     <li><a href="#" class="nav-link" data-page="search">Search</a></li>
-                    <li><a href="#" class="nav-link" id="adminNav" style="display: none;">Admin</a></li>
+                    <li><a href="#" class="nav-link" id="adminNav" data-page="admin" style="display: none;">Admin</a></li>
                 </ul>
             </div>
             <div class="nav-right">
@@ -43,7 +43,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content" id="mainContent">
         <!-- Featured/Hero Section -->
         <section class="hero-section" id="heroSection">
             <div class="hero-content">
@@ -104,6 +104,53 @@
             <h3 class="row-title">Sci-Fi & Fantasy</h3>
             <div class="carousel" id="scifiCarousel">
                 <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- My Library Page (Hidden by default) -->
+        <section class="library-page" id="libraryPage" style="display: none;">
+            <div class="library-header">
+                <h2 class="page-title">My Library</h2>
+                <p class="page-subtitle">Your saved series and watch history</p>
+            </div>
+
+            <!-- Continue Watching in Library -->
+            <div class="library-section" id="libraryContinueWatching" style="display: none;">
+                <h3 class="section-title">Continue Watching</h3>
+                <div class="library-grid" id="libraryContinueGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- My Reviews -->
+            <div class="library-section">
+                <h3 class="section-title">My Reviews</h3>
+                <div class="library-reviews" id="libraryReviews">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Watch Statistics -->
+            <div class="library-section">
+                <h3 class="section-title">Watch Statistics</h3>
+                <div class="stats-grid" id="libraryStats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWatchedEpisodes">0</div>
+                        <div class="stat-label">Episodes Watched</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWatchedHours">0</div>
+                        <div class="stat-label">Hours Watched</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalReviews">0</div>
+                        <div class="stat-label">Reviews Written</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgRating">0.0</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
