@@ -75,22 +75,21 @@ const seriesController = {
         try {
             await connection.beginTransaction();
 
-            const { 
-                name, 
-                numberOfEpisodes, 
-                releaseDate, 
-                countryOfRelease, 
+            const {
+                name,
+                numberOfEpisodes,
+                releaseDate,
+                countryOfRelease,
                 description,
                 posterUrl,
-                bannerUrl,
-                genres 
+                genres
             } = req.body;
 
             // Insert series
             const [result] = await connection.query(`
-                INSERT INTO MSK_WEB_SERIES (NAME, NUMBER_OF_EPISODES, RELEASE_DATE, COUNTRY_OF_RELEASE, DESCRIPTION, POSTER_URL, BANNER_URL)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            `, [name, numberOfEpisodes || null, releaseDate || null, countryOfRelease, description || null, posterUrl || null, bannerUrl || null]);
+                INSERT INTO MSK_WEB_SERIES (NAME, NUMBER_OF_EPISODES, RELEASE_DATE, COUNTRY_OF_RELEASE, DESCRIPTION, POSTER_URL)
+                VALUES (?, ?, ?, ?, ?, ?)
+            `, [name, numberOfEpisodes || null, releaseDate || null, countryOfRelease, description || null, posterUrl || null]);
 
             const seriesId = result.insertId;
 
@@ -133,15 +132,14 @@ const seriesController = {
             await connection.beginTransaction();
 
             const { id } = req.params;
-            const { 
-                name, 
-                numberOfEpisodes, 
-                releaseDate, 
-                countryOfRelease, 
+            const {
+                name,
+                numberOfEpisodes,
+                releaseDate,
+                countryOfRelease,
                 description,
                 posterUrl,
-                bannerUrl,
-                genres 
+                genres
             } = req.body;
 
             // Check if series exists
@@ -182,10 +180,6 @@ const seriesController = {
             if (posterUrl !== undefined) {
                 updates.push('POSTER_URL = ?');
                 values.push(posterUrl);
-            }
-            if (bannerUrl !== undefined) {
-                updates.push('BANNER_URL = ?');
-                values.push(bannerUrl);
             }
 
             if (updates.length > 0) {

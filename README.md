@@ -49,7 +49,7 @@ An Apple TV+ inspired streaming platform with MySQL backend. Built with Express.
 ### 1. Clone the repository
 
 ```bash
-cd MSK_ProjectB
+cd MSK_FinalProject
 ```
 
 ### 2. Install dependencies
@@ -79,27 +79,9 @@ Or use the npm script (if configured):
 npm run setup-db
 ```
 
-### 4. Configure environment variables
-
-The `.env` file is already configured with:
-
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=HoSaiyan6693!
-DB_NAME=streaming_platform
-DB_PORT=3306
-PORT=3001
-NODE_ENV=development
-JWT_SECRET=your_super_secret_jwt_key_change_this_in_production_msk_project_2024
-JWT_EXPIRE=7d
-BCRYPT_ROUNDS=10
-CORS_ORIGIN=http://localhost:5500
-```
-
 **Important**: Update `DB_PASSWORD` if your MySQL root password is different.
 
-### 5. Start the server
+### 4. Start the server
 
 ```bash
 # Development mode (with nodemon)
