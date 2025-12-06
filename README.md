@@ -277,6 +277,10 @@ If port 3001 is busy, change `PORT` in `.env`
 
 Update `CORS_ORIGIN` in `.env` to match your frontend URL
 
+<img width="1512" height="949" alt="image" src="https://github.com/user-attachments/assets/8d1e4081-6c12-40a2-ab02-94199f007bd8" />
+
+
+
 ## Future Enhancements
 
 - [ ] Admin dashboard
