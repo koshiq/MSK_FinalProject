@@ -14,6 +14,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/ping', (req, res) => {
+  res.json({ message: 'Server is working!' });
+});
+
 //this will test route to verify our database connection
 app.get('/test-db', async (req, res) => {
   try {
