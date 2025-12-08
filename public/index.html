@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSK Streaming - Watch Amazing Series</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <h1 class="logo">MSK+</h1>
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="browse">Browse</a></li>
+                    <li><a href="#" class="nav-link" data-page="library">My Library</a></li>
+                    <li><a href="#" class="nav-link" data-page="search">Search</a></li>
+                    <li><a href="#" class="nav-link" id="adminNav" data-page="admin" style="display: none;">Admin</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <div class="search-box" id="searchBox">
+                    <input type="text" id="searchInput" placeholder="Search for series...">
+                    <button id="searchBtn">Search</button>
+                </div>
+                <div class="user-menu" id="userMenu">
+                    <button class="user-btn" id="userBtn">
+                        <span id="userName">Guest</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 11c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm0-9C7.79 2 6 3.79 6 6s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="#" id="profileLink">Profile</a>
+                        <a href="#" id="settingsLink">Settings</a>
+                        <a href="#" id="logoutLink">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Featured/Hero Section -->
+        <section class="hero-section" id="heroSection">
+            <div class="hero-content">
+                <h2 class="hero-title" id="heroTitle">Featured Series</h2>
+                <p class="hero-description" id="heroDescription">Loading...</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="playBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Play
+                    </button>
+                    <button class="btn btn-secondary" id="infoBtn">More Info</button>
+                </div>
+                <div class="hero-meta" id="heroMeta">
+                    <span class="badge">HD</span>
+                    <span class="genre" id="heroGenre"></span>
+                    <span class="year" id="heroYear"></span>
+                </div>
+            </div>
+            <div class="hero-backdrop" id="heroBackdrop"></div>
+        </section>
+
+        <!-- Continue Watching -->
+        <section class="content-row" id="continueWatchingSection" style="display: none;">
+            <h3 class="row-title">Continue Watching</h3>
+            <div class="carousel" id="continueWatchingCarousel">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Trending Now -->
+        <section class="content-row">
+            <h3 class="row-title">Trending Now</h3>
+            <div class="carousel" id="trendingCarousel">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- All Series -->
+        <section class="content-row">
+            <h3 class="row-title">All Series</h3>
+            <div class="carousel" id="allSeriesCarousel">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Drama -->
+        <section class="content-row">
+            <h3 class="row-title">Drama</h3>
+            <div class="carousel" id="dramaCarousel">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Sci-Fi -->
+        <section class="content-row">
+            <h3 class="row-title">Sci-Fi & Fantasy</h3>
+            <div class="carousel" id="scifiCarousel">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- My Library Page (Hidden by default) -->
+        <section class="library-page" id="libraryPage" style="display: none;">
+            <div class="library-header">
+                <h2 class="page-title">My Library</h2>
+                <p class="page-subtitle">Your saved series and watch history</p>
+            </div>
+
+            <!-- Continue Watching in Library -->
+            <div class="library-section" id="libraryContinueWatching" style="display: none;">
+                <h3 class="section-title">Continue Watching</h3>
+                <div class="library-grid" id="libraryContinueGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- My Reviews -->
+            <div class="library-section">
+                <h3 class="section-title">My Reviews</h3>
+                <div class="library-reviews" id="libraryReviews">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Watch Statistics -->
+            <div class="library-section">
+                <h3 class="section-title">Watch Statistics</h3>
+                <div class="stats-grid" id="libraryStats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWatchedEpisodes">0</div>
+                        <div class="stat-label">Episodes Watched</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWatchedHours">0</div>
+                        <div class="stat-label">Hours Watched</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalReviews">0</div>
+                        <div class="stat-label">Reviews Written</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgRating">0.0</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Series Details -->
+    <div class="modal" id="seriesModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Series Title</h2>
+                <div class="modal-meta">
+                    <span class="rating" id="modalRating">★ 0.0</span>
+                    <span id="modalYear">2024</span>
+                    <span id="modalGenres">Drama</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescription">Series description...</p>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="modalPlayBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Play
+                    </button>
+                    <button class="btn btn-secondary" id="addToListBtn">+ My List</button>
+                    <button class="btn btn-secondary" id="editSeriesBtn" style="display: none;">Edit Series</button>
+                </div>
+                <div class="episodes-section">
+                    <h3>Episodes</h3>
+                    <div id="episodesList" class="episodes-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="reviews-section">
+                    <h3>Reviews</h3>
+                    <div id="reviewsList" class="reviews-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <button class="btn btn-secondary" id="addReviewBtn">Write a Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login/Register Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content auth-modal">
+            <button class="modal-close" id="authModalClose">&times;</button>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Sign In</button>
+                    <button class="auth-tab" data-tab="register">Create Account</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <h2>Sign In</h2>
+                    <div class="form-group">
+                        <input type="email" id="loginEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    <p class="auth-switch">New to MSK+? <a href="#" class="switch-tab" data-tab="register">Create an account</a></p>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <input type="text" id="registerFirstName" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="registerLastName" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="registerEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="registerPassword" placeholder="Password (8+ chars, upper, lower, number)" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Your Favorite Series</label>
+                        <select id="registerSeriesId" required>
+                            <option value="">-- Select a Series --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Your Country</label>
+                        <select id="registerCountryId" required>
+                            <option value="">-- Select Country --</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                    <p class="auth-switch">Already have an account? <a href="#" class="switch-tab" data-tab="login">Sign in</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="modal video-modal" id="videoModal">
+        <div class="video-container">
+            <button class="video-close" id="videoClose">&times;</button>
+            <video id="videoPlayer" controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-info">
+                <h3 id="videoTitle">Episode Title</h3>
+                <p id="videoDescription">Episode description</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast" id="toast"></div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
